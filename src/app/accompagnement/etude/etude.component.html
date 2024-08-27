@@ -1,0 +1,143 @@
+<div class="bg-white dark:bg-white/10 m-0 p-0 text-theme-gray dark:text-white/60 text-[15px] rounded-10 relative mb-[25px]">
+
+    <div *ngIf="isSuccessMessageVisible" [ngClass]="successMessageClass" class="border px-4 py-3 rounded relative" role="alert">
+      <strong class="font-bold">{{ successMessage }}</strong>
+    </div>
+  
+    <div class="py-[16px] px-[25px] text-dark dark:text-white/[.87] font-medium text-[17px] border-regular dark:border-white/10 border-b flex items-center justify-between">
+      <h4 class="mb-0 text-lg font-medium text-dark dark:text-white/[.87]">List of Etudes</h4>
+      <button (click)="openModal()" class="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+        Add Etude
+      </button>
+    </div>
+  
+    <div class="p-[25px]">
+      <!-- <div class="flex items-center justify-center w-full mt-5 mb-[25px] max-md:flex-col max-md:justify-center gap-[15px]">
+        <div class="relative ml-auto">
+          <input
+            class="h-10 px-[20px] pl-[40px] text-body dark:text-white/60 bg-white dark:bg-white/10 border-normal border-1 dark:border-white/10 rounded-[6px] placeholder-gray-400 focus:outline-none focus:border-normal"
+            type="text"
+            placeholder="Search by year..."
+            [(ngModel)]="searchKeyword"
+            (keyup)="searchEtudes()"
+          />
+          <i class="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-400 fas fa-search"></i>
+        </div>
+      </div> -->
+
+      <div class="flex items-center justify-center w-full mt-5 mb-6 gap-4 max-md:flex-col max-md:justify-center">
+        <div class="relative ml-auto">
+          <input
+            class="h-10 px-5 pl-10 text-body dark:text-white/60 bg-white dark:bg-white/10 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-blue-300"
+            type="text"
+            placeholder="Search by year..."
+            [(ngModel)]="searchKeyword"
+            (keyup)="searchEtudes()"
+          />
+          <i class="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-400 fas fa-search"></i>
+        </div>
+      </div>
+      
+  
+      <div class="w-full overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="bg-regularBG dark:bg-[#323440] px-[20px] py-[16px] text-start text-dark dark:text-white/[.87] text-[15px] font-medium border-none rounded-s-[10px] capitalize">anneeScolaire</th>
+              <th class="bg-regularBG dark:bg-[#323440] px-[20px] py-[16px] text-start text-dark dark:text-white/[.87] text-[15px] font-medium border-none capitalize">niveau</th>
+              <th class="bg-regularBG dark:bg-[#323440] px-[20px] py-[16px] text-start text-dark dark:text-white/[.87] text-[15px] font-medium border-none capitalize">institut</th>
+              <th class="bg-regularBG dark:bg-[#323440] px-[20px] py-[16px] text-start text-dark dark:text-white/[.87] text-[15px] font-medium border-none capitalize">note</th>
+              <th class="bg-regularBG dark:bg-[#323440] px-[20px] py-[16px] text-start text-dark dark:text-white/[.87] text-[15px] font-medium border-none rounded-e-[10px] capitalize">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr *ngFor="let etude of etudes | paginate: { itemsPerPage: itemsPerPage, currentPage: p }">
+              <td class="px-[20px] py-4 text-dark dark:text-white/[.87] text-[15px]">{{ etude.anneeScolaire }}</td>
+              <td class="px-[20px] py-4 text-dark dark:text-white/[.87] text-[15px]">{{ etude.niveau }}</td>
+              <td class="px-[20px] py-4 text-dark dark:text-white/[.87] text-[15px]">{{ etude.institut }}</td>
+              <td class="px-[20px] py-4 text-dark dark:text-white/[.87] text-[15px]">{{ etude.note }}</td>
+              <td class="px-[20px] py-4 text-dark dark:text-white/[.87] text-[15px]">
+                <div class="flex items-center space-x-2">
+                  <button (click)="editEtudeDetails(etude)" class="p-2 rounded-md text-orange-600 bg-orange-100 hover:bg-orange-200 focus:outline-none">
+                    <i class="fas fa-edit text-[14px]"></i>
+                  </button>
+                  <button (click)="deleteEtude(etude.id)" class="p-2 rounded-md text-red-600 bg-red-100 hover:bg-red-200 focus:outline-none">
+                    <i class="fas fa-trash-alt text-[14px]"></i>
+                  </button>
+                  <button (click)="viewDetails(etude.id)" class="p-2 rounded-md text-blue-600 bg-blue-100 hover:bg-blue-200 focus:outline-none">
+                    <i class="fas fa-eye text-[14px]"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+  
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+      </div>
+    </div>
+  </div>
+  
+  <div *ngIf="isModalOpen" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
+    <div class="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-lg max-w-md w-full">
+      <h2 class="text-xl font-semibold mb-4 text-center">{{ editEtude ? 'Update Etude' : 'Create New Etude' }}</h2>
+      <form [formGroup]="etudeForm" (ngSubmit)="createEtude()" novalidate>
+
+        <div class="mb-4">
+          <label for="anneeScolaire" class="block text-sm font-medium text-gray-700 dark:text-gray-300">AnneeScolaire:</label>
+          <input
+            type="text"
+            id="anneeScolaire"
+            formControlName="anneeScolaire"
+            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          />
+          <div *ngIf="etudeForm.get('anneeScolaire')?.invalid && (etudeForm.get('anneeScolaire')?.dirty || etudeForm.get('anneeScolaire')?.touched)" class="text-red-600 text-sm">
+            <div *ngIf="etudeForm.get('anneeScolaire')?.errors?.required">AnneeScolaire is required.</div>
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <label for="niveau" class="block text-sm font-medium text-gray-700 dark:text-gray-300">niveau:</label>
+          <input
+            type="text"
+            id="niveau"
+            formControlName="niveau"
+            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          />
+          <div *ngIf="etudeForm.get('niveau')?.invalid && (etudeForm.get('niveau')?.dirty || etudeForm.get('niveau')?.touched)" class="text-red-600 text-sm">
+            <div *ngIf="etudeForm.get('niveau')?.errors?.required">niveau is required.</div>
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <label for="institut" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Institute:</label>
+          <input
+            type="text"
+            id="institut"
+            formControlName="institut"
+            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          />
+          <div *ngIf="etudeForm.get('institut')?.invalid && (etudeForm.get('institut')?.dirty || etudeForm.get('institut')?.touched)" class="text-red-600 text-sm">
+            <div *ngIf="etudeForm.get('institut')?.errors?.required">Institute is required.</div>
+          </div>
+        </div>
+        <div class="mb-4">
+          <label for="note" class="block text-sm font-medium text-gray-700 dark:text-gray-300">note:</label>
+          <input
+            type="text"
+            id="note"
+            formControlName="note"
+            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          />
+          <div *ngIf="etudeForm.get('note')?.invalid && (etudeForm.get('note')?.dirty || etudeForm.get('note')?.touched)" class="text-red-600 text-sm">
+            <div *ngIf="etudeForm.get('note')?.errors?.required">note is required.</div>
+          </div>
+        </div>
+        <div class="flex justify-end space-x-2">
+          <button type="button" (click)="closeModal()" class="bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-600 focus:outline-none">Cancel</button>
+          <button type="submit" class="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none">{{ editEtude ? 'Update' : 'Create' }}</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
