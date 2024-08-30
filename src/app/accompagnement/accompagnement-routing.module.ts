@@ -7,6 +7,7 @@ import { IntervenantComponent } from './intervenant/intervenant.component';
 import { EtudeComponent } from './etude/etude.component';
 import { MembreComponent } from './membre/membre.component';
 import { VilleComponent } from './ville/ville.component';
+// import { AuthGuard } from '../authentication/auth.guard';
 
 
 
@@ -50,6 +51,7 @@ const routes: Routes = [
         data:{
             title:'Etude'
         }
+        // , canActivate: [AuthGuard] 
     },
     {
        

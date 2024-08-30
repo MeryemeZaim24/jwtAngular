@@ -5,7 +5,7 @@ import { Ville } from "./ville";
 
 export class Beneficiaire {
 
-    id?: number;
+    id: number;
     nom: string;
     prenom: string;
     dateNaissance: string;
@@ -17,5 +17,4 @@ export class Beneficiaire {
     ville: Ville;    
     activites: Activite; 
 }
-
 

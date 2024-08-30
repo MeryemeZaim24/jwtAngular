@@ -4,6 +4,7 @@ import messages from '../../../../assets/data/global/header/messages.json';
 import notification from '../../../../assets/data/global/header/notification.json';
 import authorMenu from '../../../../assets/data/global/header/author-menu.json';
 import settings from '../../../../assets/data/global/header/settings.json';
+import { AuthService } from 'src/app/authentication/serv/auth.service';
 
 @Component({
     selector: 'app-header',
@@ -21,9 +22,10 @@ export class HeaderComponent{
     appAuthorMenu = authorMenu.appAuthorMenu;
     appSettings = settings.appSettings;
 
-    constructor( private themeService: ThemeConstantService) {}
+    constructor( private themeService: ThemeConstantService, private authService: AuthService) {}
 
     signOut(): void {
+        this.authService.logout()
       console.log('User signed out!');
     }
 

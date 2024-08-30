@@ -67,6 +67,9 @@ export class Login1Component {
       remember: [true],
     });
   }
+  // signOut():void {
+  //   this.authService.logout
+  // }
 }
 
 

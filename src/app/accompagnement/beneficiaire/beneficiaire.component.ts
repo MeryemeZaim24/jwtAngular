@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Beneficiaire } from 'src/app/classe/beneficiaire';
 import { BeneficiaireService } from 'src/app/services/beneficiaire.service';
-
+import { Beneficiaire } from 'src/app/classe/beneficiaire';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-beneficiaire',
@@ -11,22 +10,25 @@ import { BeneficiaireService } from 'src/app/services/beneficiaire.service';
 })
 export class BeneficiaireComponent implements OnInit {
   beneficiaires: Beneficiaire[] = [];
-  selectedBeneficiaire: Beneficiaire | null = null;
   beneficiaireForm: FormGroup;
-  isEditing = false;
+  selectedBeneficiaire: Beneficiaire | null = null;
+  showFilter = false; // Ajoutez cette propriété pour le filtre
+  filters = { nom: '', prenom: '', branche: '' };
+  branches = []; // Initialisez avec les données appropriées
+  datatableConfig: any; // Configurez vos paramètres de DataTable ici
+  isLoading = false;
+  swalOptions: any = {}; // Configurez vos options SweetAlert ici
 
-  constructor(private beneficiaireService: BeneficiaireService, private fb: FormBuilder) {
+  constructor(
+    private beneficiaireService: BeneficiaireService,
+    private fb: FormBuilder
+  ) {
     this.beneficiaireForm = this.fb.group({
       id: [null],
-      nom: ['', Validators.required],
-      prenom: ['', Validators.required],
-      dateNaissance: ['', Validators.required],
-      adresse: ['', Validators.required],
-      pereContact: [''],
-      mereContact: [''],
-      region: ['', Validators.required],
-      branche: [null],
-      ville: [null]
+      nom: [''],
+      prenom: [''],
+      dateNaissance: [''],
+      branche: [null]
     });
   }
 
@@ -35,53 +37,77 @@ export class BeneficiaireComponent implements OnInit {
   }
 
   loadBeneficiaires(): void {
-    this.beneficiaireService.getAllBeneficiaires().subscribe(
-      (data: Beneficiaire[]) => this.beneficiaires = data,
-      (error) => console.error(error)
+    this.beneficiaireService.getAllBeneficiaires(this.datatableConfig).subscribe(
+      (response) => {
+        this.beneficiaires = response.data;
+      },
+      (error) => {
+        console.error('Erreur lors du chargement des bénéficiaires', error);
+      }
     );
   }
 
-  selectBeneficiaire(beneficiaire: Beneficiaire): void {
-    this.selectedBeneficiaire = beneficiaire;
-    this.beneficiaireForm.patchValue(beneficiaire);
-    this.isEditing = true;
-  }
-
-  createOrUpdateBeneficiaire(): void {
-    if (this.beneficiaireForm.valid) {
-      const beneficiaire: Beneficiaire = this.beneficiaireForm.value;
-      if (beneficiaire.id) {
-        this.beneficiaireService.updateBeneficiaire(beneficiaire.id, beneficiaire).subscribe(
-          () => {
-            this.loadBeneficiaires();
-            this.resetForm();
-          },
-          (error) => console.error(error)
-        );
-      } else {
-        this.beneficiaireService.createBeneficiaire(beneficiaire).subscribe(
-          () => {
-            this.loadBeneficiaires();
-            this.resetForm();
-          },
-          (error) => console.error(error)
-        );
-      }
-    }
-  }
-
-  deleteBeneficiaire(id: number): void {
-    if (confirm('Are you sure you want to delete this beneficiaire?')) {
-      this.beneficiaireService.deleteBeneficiaire(id).subscribe(
-        () => this.loadBeneficiaires(),
-        (error) => console.error(error)
+  saveBeneficiaire(): void {
+    const beneficiaire: Beneficiaire = this.beneficiaireForm.value;
+    if (beneficiaire.id) {
+      this.beneficiaireService.updateBeneficiaire(beneficiaire.id, beneficiaire).subscribe(
+        () => {
+          this.loadBeneficiaires();
+          this.clearForm();
+        },
+        (error) => {
+          console.error('Erreur lors de la mise à jour du bénéficiaire', error);
+        }
+      );
+    } else {
+      this.beneficiaireService.createBeneficiaire(beneficiaire).subscribe(
+        () => {
+          this.loadBeneficiaires();
+          this.clearForm();
+        },
+        (error) => {
+          console.error('Erreur lors de la création du bénéficiaire', error);
+        }
       );
     }
   }
 
-  resetForm(): void {
+  deleteBeneficiaire(id: number): void {
+    this.beneficiaireService.deleteBeneficiaire(id).subscribe(
+      () => {
+        this.loadBeneficiaires();
+      },
+      (error) => {
+        console.error('Erreur lors de la suppression du bénéficiaire', error);
+      }
+    );
+  }
+
+  editBeneficiaire(beneficiaire: Beneficiaire): void {
+    this.beneficiaireForm.patchValue(beneficiaire);
+  }
+
+  openCreateModal(): void {
     this.beneficiaireForm.reset();
-    this.isEditing = false;
+  }
+
+  toggleFilter(): void {
+    this.showFilter = !this.showFilter;
+  }
+
+  clearForm(): void {
+    this.beneficiaireForm.reset();
     this.selectedBeneficiaire = null;
+  }
+
+  filterBeneficiaires(): void {
+    this.beneficiaireService.getFilteredBeneficiaires(this.filters).subscribe(
+      (response) => {
+        this.beneficiaires = response.data;
+      },
+      (error) => {
+        console.error('Erreur lors du filtrage des bénéficiaires', error);
+      }
+    );
   }
 }

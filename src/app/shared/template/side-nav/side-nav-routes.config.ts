@@ -16,88 +16,88 @@ export const ROUTES: SideNavInterface[] = [{
         iconTheme: '',
         submenu: [],
       },
-      {
-        path: '/dashboard/demo-two',
-        title: 'Demo Two',
-        iconType: '',
-        icon: '',
-        iconTheme: '',
-        submenu: []
-      },
-      {
-        path: '/dashboard/demo-three',
-        title: 'Demo Three',
-        iconType: '',
-        icon: '',
-        iconTheme: '',
-        submenu: []
-      },
-      {
-        path: '/dashboard/demo-four',
-        title: 'Demo Four',
-        iconType: '',
-        icon: '',
-        iconTheme: '',
-        submenu: []
-      },
-      {
-        path: '/dashboard/demo-five',
-        title: 'Demo Five',
-        iconType: '',
-        icon: '',
-        iconTheme: '',
-        submenu: []
-      },
-      {
-        path: '/dashboard/demo-six',
-        title: 'Demo Six',
-        iconType: '',
-        icon: '',
-        iconTheme: '',
-        submenu: []
-      },
-      {
-        path: '/dashboard/demo-seven',
-        title: 'Demo Seven',
-        iconType: '',
-        icon: '',
-        iconTheme: '',
-        submenu: []
-      },
-      {
-        path: '/dashboard/demo-eight',
-        title: 'Demo Eight',
-        iconType: '',
-        icon: '',
-        iconTheme: '',
-        submenu: []
-      },
-      {
-        path: '/dashboard/demo-nine',
-        title: 'Demo Nine',
-        iconType: '',
-        icon: '',
-        iconTheme: '',
-        submenu: []
-      },
-      {
-        path: '/dashboard/demo-ten',
-        title: 'Demo Ten',
-        iconType: '',
-        icon: '',
-        iconTheme: '',
-        submenu: []
-      },
+      // {
+      //   path: '/dashboard/demo-two',
+      //   title: 'Demo Two',
+      //   iconType: '',
+      //   icon: '',
+      //   iconTheme: '',
+      //   submenu: []
+      // },
+      // {
+      //   path: '/dashboard/demo-three',
+      //   title: 'Demo Three',
+      //   iconType: '',
+      //   icon: '',
+      //   iconTheme: '',
+      //   submenu: []
+      // },
+      // {
+      //   path: '/dashboard/demo-four',
+      //   title: 'Demo Four',
+      //   iconType: '',
+      //   icon: '',
+      //   iconTheme: '',
+      //   submenu: []
+      // },
+      // {
+      //   path: '/dashboard/demo-five',
+      //   title: 'Demo Five',
+      //   iconType: '',
+      //   icon: '',
+      //   iconTheme: '',
+      //   submenu: []
+      // },
+      // {
+      //   path: '/dashboard/demo-six',
+      //   title: 'Demo Six',
+      //   iconType: '',
+      //   icon: '',
+      //   iconTheme: '',
+      //   submenu: []
+      // },
+      // {
+      //   path: '/dashboard/demo-seven',
+      //   title: 'Demo Seven',
+      //   iconType: '',
+      //   icon: '',
+      //   iconTheme: '',
+      //   submenu: []
+      // },
+      // {
+      //   path: '/dashboard/demo-eight',
+      //   title: 'Demo Eight',
+      //   iconType: '',
+      //   icon: '',
+      //   iconTheme: '',
+      //   submenu: []
+      // },
+      // {
+      //   path: '/dashboard/demo-nine',
+      //   title: 'Demo Nine',
+      //   iconType: '',
+      //   icon: '',
+      //   iconTheme: '',
+      //   submenu: []
+      // },
+      // {
+      //   path: '/dashboard/demo-ten',
+      //   title: 'Demo Ten',
+      //   iconType: '',
+      //   icon: '',
+      //   iconTheme: '',
+      //   submenu: []
+      // },
     ]
   },
-  {
-    path: '/changelog/changelog',
-    title: 'Change-Log',
-    iconType: 'nzIcon',
-    iconTheme: 'outline',
-    icon: 'rise',
-    submenu: []
-  },
+  // {
+  //   path: '/changelog/changelog',
+  //   title: 'Change-Log',
+  //   iconType: 'nzIcon',
+  //   iconTheme: 'outline',
+  //   icon: 'rise',
+  //   submenu: []
+  // },
 
 
   {
